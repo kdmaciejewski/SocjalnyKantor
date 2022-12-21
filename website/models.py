@@ -66,5 +66,3 @@ class Transakcja(db.Model):
     ilosc = db.Column(db.Float, nullable=False)
     cena_jednostkowa = db.Column(db.Float, nullable=False)
     cena_calkowita = db.Column(db.Float, nullable=False)
-
-

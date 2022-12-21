@@ -60,22 +60,31 @@ def logout():
 @app.route("/exchange", methods=['GET', 'POST'])
 @login_required
 def exchange():
-    form = ExchangeForm()
-    if form.validate_on_submit():
-        val1 = int(form.val1.data)
-        cur1 = str(form.cur1.data)
-        cur2 = str(form.cur2.data)
+    currencies = ['BTC', 'USD', 'DOGE']
+    if request.method == 'POST':
+        cur = request.form.get('currency')
+        print(str(cur))
+        render_template('exchange.html', title='Wymiana', currencies=currencies)
 
-        res = prices.exchange(val1, cur1, cur2)
-
-        if res[1] == True:
-            flash(f'Wymieniono {res[0]}', 'success')
-            return render_template('exchange.html', title='Wymiana', form=form)
-        else:
-            flash('Niepoprawnie podane dane', 'danger')
-
-
-    return render_template('exchange.html', title='Wymiana', form=form)
+# @app.route("/exchange", methods=['GET', 'POST'])
+# @login_required
+# def exchange():
+#     form = ExchangeForm()
+#     if form.validate_on_submit():
+#         val1 = int(form.val1.data)
+#         cur1 = str(form.cur1.data)
+#         cur2 = str(form.cur2.data)
+#
+#         res = prices.exchange(val1, cur1, cur2)
+#
+#         if res[1] == True:
+#             flash(f'Wymieniono {res[0]}', 'success')
+#             return render_template('exchange.html', title='Wymiana', form=form)
+#         else:
+#             flash('Niepoprawnie podane dane', 'danger')
+#
+#
+#     return render_template('exchange.html', title='Wymiana', form=form)
 
 
 @app.route("/post/new", methods=['GET', 'POST'])
