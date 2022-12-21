@@ -97,12 +97,13 @@ def post(post_id):
     form = PostForm()
     post = Post.query.get_or_404(post_id)
 
-    user = Klient.query.filter_by(login=current_user.login).first() #sprawdzenie czy to klient czy administrator
-    if user:
+    user = Klient.query.filter_by(login=current_user.login).first()
+    #sprawdzenie czy to klient czy administrator
+    if user.jestAdminem:
         print('1')
-        return render_template('post_klient.html', tytul=post.tytul, post=post)
-    else:
         return render_template('post.html', tytul=post.tytul, post=post)
+    else:
+        return render_template('post_klient.html', tytul=post.tytul, post=post)
 
 @app.route("/post/<int:post_id>/update", methods=['GET', 'POST'])
 @login_required
