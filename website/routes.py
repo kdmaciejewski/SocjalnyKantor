@@ -41,7 +41,11 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = Klient.query.filter_by(login=form.email.data).first()  #sprawdzamy czy jest taki email w bazie
-        if user and bcrypt.check_password_hash(user.haslo, form.password.data):
+        if user and user.haslo == form.password.data:                                            #tyyyyyyylko tyyymczasowo
+            login_user(user)  # , remember=form.remember.data
+            next_page = request.args.get('next')
+            return redirect(next_page) if next_page else redirect(url_for('home'))
+        elif user and bcrypt.check_password_hash(user.haslo, form.password.data):
             login_user(user)                                        #, remember=form.remember.data
             #next_page to strona która wybraliśmy zanim przenieśliśmy się na strone logowania
             #(np nie mielismy dostępu do niej i nas przeniosło)
@@ -99,10 +103,11 @@ def post(post_id):
 
     user = Klient.query.filter_by(login=current_user.login).first()
     #sprawdzenie czy to klient czy administrator
-    if user.jestAdminem:
+    if user.jestAdminem == 1:
         print('1')
-        return render_template('post.html', tytul=post.tytul, post=post)
+        return render_template('post.html', tytul=post.tytul, post=post) #tutaj możemy edytować
     else:
+        print(user.jestAdminem)
         return render_template('post_klient.html', tytul=post.tytul, post=post)
 
 @app.route("/post/<int:post_id>/update", methods=['GET', 'POST'])
