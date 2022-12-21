@@ -24,7 +24,7 @@ class Klient(db.Model, UserMixin):
     login = db.Column(db.String(100), unique=True, nullable=False) #login to email
     image_file = db.Column(db.String(20), nullable=True, default='default.jpg')
     haslo = db.Column(db.String(60), nullable=False)
-    jestAdminem = db.Column(db.Boolean, nullable=True, default=True)
+    jestAdminem = db.Column(db.Boolean, nullable=True, default=False)
     dataUrodzenia = db.Column(db.Date, nullable=True)
     posts = db.relationship('Post', backref='author', lazy=True)    #relacja
 
